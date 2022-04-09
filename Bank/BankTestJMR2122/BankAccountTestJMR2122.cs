@@ -27,5 +27,50 @@ namespace BankTestJMR2122
             double actual = account.Balance;
             Assert.AreEqual(expected, actual, 0.001, "Account not debited correctly");
         }
+
+        [TestMethod]
+        public void Debit_WithMinimumLimit_UpdateJMR2122()
+        {
+            double beginningBalance = 11.99;
+            double debitAmount = 0;
+            double expected = 11.99;
+            
+            BankAccountJMR2122 account = new BankAccountJMR2122("Mr. Bryan Walton", beginningBalance);
+            account.Debit(debitAmount);
+            double actual = account.Balance;
+
+            Assert.AreEqual(expected, actual);
+
+        }
+
+        [TestMethod]
+        public void Debit_WithMaximumLimit_UpdateJMR2122()
+        {
+            double beginningBalance = 11.99;
+            double debitAmount = 11.99;
+            double expected = 0;
+
+            BankAccountJMR2122 account = new BankAccountJMR2122("Mr. Bryan Walton", beginningBalance);
+            account.Debit(debitAmount);
+            double actual = account.Balance;
+
+            Assert.AreEqual(expected, actual);
+
+        }
+
+        [TestMethod]
+        public void Debit_WithValidLimit_UpdateJMR2122()
+        {
+            double beginningBalance = 11.99;
+            double debitAmount = 5.71;
+            double expected = 6.28;
+
+            BankAccountJMR2122 account = new BankAccountJMR2122("Mr. Bryan Walton", beginningBalance);
+            account.Debit(debitAmount);
+            double actual = account.Balance;
+
+            Assert.AreEqual(expected, actual);
+
+        }
     }
 }
