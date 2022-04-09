@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using BankAccountNS;
 
 namespace BankTestJMR2122
@@ -71,6 +72,40 @@ namespace BankTestJMR2122
 
             Assert.AreEqual(expected, actual);
 
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void Debit_WhenBankAccountIsFrezee_ShouldThrowException()
+        {
+            // preparación del caso de prueba
+            double beginningBalance = 11.99;
+            double debitAmount = -100.00;
+            BankAccountJMR2122 account = new BankAccountJMR2122("Mr. Bryan Walton", beginningBalance);
+            account.FreezeAccount();
+            // acción a probar
+            account.Debit(debitAmount);
+            // la afirmación es manejado por el atributo ExpectedException
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void Debit_WhenAmountIsNegative_ShouldThrowException()
+        {
+            double beginningBalance = 11.99;
+            double debitAmount = -100.00;
+            BankAccountJMR2122 account = new BankAccountJMR2122("Mr. Bryan Walton", beginningBalance);
+            account.Debit(debitAmount);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void Debit_WhenAmountIsMoreThanBalance_ShouldThrowException()
+        {
+            double beginningBalance = 11.99;
+            double debitAmount = 200;
+            BankAccountJMR2122 account = new BankAccountJMR2122("Mr. Bryan Walton", beginningBalance);
+            account.Debit(debitAmount);
         }
     }
 }
