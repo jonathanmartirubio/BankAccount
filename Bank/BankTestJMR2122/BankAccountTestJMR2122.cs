@@ -89,23 +89,39 @@ namespace BankTestJMR2122
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void Debit_WhenAmountIsNegative_ShouldThrowException()
+        public void Debit_WhenAmountIsNegative_ShouldThrowArgumentOutOfRange()
         {
             double beginningBalance = 11.99;
-            double debitAmount = -100.00;
+            double debitAmount = -20.00;
             BankAccountJMR2122 account = new BankAccountJMR2122("Mr. Bryan Walton", beginningBalance);
-            account.Debit(debitAmount);
+            try
+            {
+                account.Debit(debitAmount);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                StringAssert.Contains(e.Message, BankAccountJMR2122.DebitAmountLessThanZeroMessage);
+                return;
+            }
+            Assert.Fail("No exception was thrown");
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void Debit_WhenAmountIsMoreThanBalance_ShouldThrowException()
+        public void Debit_WhenAmountIsMoreThanBalance_ShouldThrowArgumentOutOfRange()
         {
             double beginningBalance = 11.99;
-            double debitAmount = 200;
+            double debitAmount = 20.00;
             BankAccountJMR2122 account = new BankAccountJMR2122("Mr. Bryan Walton", beginningBalance);
-            account.Debit(debitAmount);
+            try
+            {
+                account.Debit(debitAmount);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                StringAssert.Contains(e.Message, BankAccountJMR2122.DebitAmountExceedsBalanceMessage);
+                return;
+            }
+            Assert.Fail("No exception was thrown");
         }
     }
 }
